@@ -96,6 +96,8 @@
 
 from django.db import models, migrations
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 def create_unknown_faculty(apps, schema_editor):
     Faculty = apps.get_model('main', 'Faculty')
@@ -248,6 +250,7 @@ class Grade(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, default=1)
     speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE)
     grade_type = models.ForeignKey(TypeOfGrades, on_delete=models.CASCADE)
+    grade = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     date = models.DateTimeField()
 

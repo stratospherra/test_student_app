@@ -175,7 +175,10 @@ class TeacherAdmin(admin.ModelAdmin):
     formatted_id.short_description = 'ID'
 
 
-admin.site.register(Grade)
+@admin.register(Grade)
+class GradeAdmin(admin.ModelAdmin):
+    list_display = ('student', 'subject', 'teacher', 'grade_type', 'grade')
+    
 admin.site.register(TypeOfGrades)
 admin.site.register(Subject)
 admin.site.register(StudentStatus)
