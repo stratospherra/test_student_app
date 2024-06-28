@@ -1,3 +1,5 @@
 from django.test import TestCase
 
-# Create your tests here.
+from scrapers import ScheduleScraper
+
+ScheduleScraper('timetable.xlsx', 'SE,DS+НИШ 2кАО')

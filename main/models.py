@@ -1,99 +1,3 @@
-# from django.db import models
-# from django.core.validators import MinValueValidator, MaxValueValidator
-
-# class Faculty(models.Model):
-#     name = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.name
-
-# class Speciality(models.Model):
-#     name = models.CharField(max_length=100)
-#     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.name
-
-# class Course(models.Model):
-#     name = models.CharField(max_length=100)
-#     speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.name
-
-# class Instructor(models.Model):
-#     first_name = models.CharField(max_length=50)
-#     last_name = models.CharField(max_length=50)
-#     email = models.EmailField()
-
-#     def __str__(self):
-#         return f"{self.first_name} {self.last_name}"
-
-# class Student(models.Model):
-#     first_name = models.CharField(max_length=50)
-#     middle_name = models.CharField(max_length=50)
-#     last_name = models.CharField(max_length=50)
-#     date_of_birth = models.DateField()
-#     email = models.EmailField()
-#     phone = models.CharField(max_length=20)
-#     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
-#     speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE)
-#     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return f"{self.id} {self.last_name} {self.first_name} {self.middle_name}"
-
-#     @property
-#     def formatted_id(self):
-#         return f"{self.id:06d}"
-
-# class Grade(models.Model):
-#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-#     instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
-#     grade_value = models.DecimalField(
-#         max_digits=5, 
-#         decimal_places=2, 
-#         validators=[MinValueValidator(0), MaxValueValidator(100)]
-#     )
-
-#     def __str__(self):
-#         return f"{self.student} - {self.course} - {self.grade_value}"
-
-# class Language(models.Model):
-#     name = models.CharField(max_length=50)
-
-#     def __str__(self):
-#         return self.name
-
-# class Application(models.Model):
-#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-#     submission_date = models.DateField()
-
-#     def __str__(self):
-#         return f"{self.student} - {self.course} - {self.submission_date}"
-
-# class Notification(models.Model):
-#     message = models.TextField()
-#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return f"Notification for {self.student}"
-
-# class News(models.Model):
-#     title = models.CharField(max_length=200)
-#     content = models.TextField()
-#     published_date = models.DateField()
-#     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.title
-
-
-
-# models.py
-
 from django.db import models, migrations
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -305,4 +209,37 @@ class StudentOfLanguage(models.Model):
 
     def __str__(self):
         return f"Student {self.student} in Language {self.language}"
+    
+
+
+class DayOfWeek(models.Model):
+    # language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    name_en = models.CharField(max_length=20)
+    name_ru = models.CharField(max_length=20)
+    name_kz = models.CharField(max_length=20)
+    def __str__(self):
+        return f"{self.name_ru + self.name_kz + self.name_en}"
+
+
+class ScheduleVersion(models.Model):
+    version_number = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.version_number
+
+
+class Schedule(models.Model):
+    day_of_week = models.ForeignKey(DayOfWeek, on_delete=models.CASCADE)
+    time_start = models.TimeField()
+    time_end = models.TimeField()
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    room = models.CharField(max_length=20)
+    speciality = models.ForeignKey(Speciality, on_delete=models.CASCADE)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    version = models.ForeignKey(ScheduleVersion, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.day_of_week} {self.time_start}-{self.time_end} {self.subject} ({self.teacher})"
     
