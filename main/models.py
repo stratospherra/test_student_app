@@ -215,10 +215,10 @@ class StudentOfLanguage(models.Model):
 class DayOfWeek(models.Model):
     # language = models.ForeignKey(Language, on_delete=models.CASCADE)
     name_en = models.CharField(max_length=20)
-    name_ru = models.CharField(max_length=20)
-    name_kz = models.CharField(max_length=20)
+    # name_ru = models.CharField(max_length=20)
+    # name_kz = models.CharField(max_length=20)
     def __str__(self):
-        return f"{self.name_ru + self.name_kz + self.name_en}"
+        return f"{ self.name_en}"
 
 
 class ScheduleVersion(models.Model):
